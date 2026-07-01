@@ -1,0 +1,52 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="Authenticatiion_30626.Site1" %>
+<%@Register Src="~/Header.ascx" TagName="Header" TagPrefix="uc" %>
+<%@Register Src="~/Footer.ascx" TagName="Footer" TagPrefix="uc" %>
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title></title>
+    <link href="Styles/Site1.css?v=<%= DateTime.Now.Ticks %>"  rel="stylesheet" />
+    <script src="menu.js" type="text/javascript" defer></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <script>
+        function showPopup(message, bgcolor) {
+            setTimeout(() => {
+                document.documentElement.style.setProperty('--bg-popup', bgcolor);
+                const popup = document.getElementById("popmsg");
+                const msg = document.querySelector("#popmsg p");
+                msg.innerText = message;
+                // popup.style.display = "flex";
+                popup.style.transform = "translateX(0%)";
+                setTimeout(() => hidePopup(), 3000);// auto-hide after 3s
+            }, 10)
+
+        }
+
+        function hidePopup() {
+            const popup = document.getElementById("popmsg");
+            popup.style.transform = "translateX(100%)";
+            // setTimeout(() => popup.style.display = "none", 500);
+        }
+    </script>
+
+</head>
+<body>
+    <div id="popmsg">
+        <p></p>
+    </div>
+    <div id="header_container">
+        <uc:Header id ="my_head" runat="server"></uc:Header>
+    </div>
+    <form id="form1" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+    <div id="footer_container">
+        <uc:Footer id="my_foot" runat="server"></uc:Footer>
+    </div>
+</body>
+</html>
