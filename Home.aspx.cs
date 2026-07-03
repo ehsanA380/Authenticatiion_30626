@@ -31,8 +31,9 @@ namespace Authenticatiion_30626
 
         public void BindUser()
         {
-            SqlCommand cmd = new SqlCommand("bindUser",conn);
+            SqlCommand cmd = new SqlCommand("SP_USERS", conn);
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@action","bindUser");
             cmd.Parameters.AddWithValue("@id", Session["id"]);
             conn.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
@@ -48,8 +49,9 @@ namespace Authenticatiion_30626
             string[] abc = e.CommandArgument.ToString().Split(',');
             if (e.CommandName == "delete_row")
             {
-                SqlCommand cmd = new SqlCommand("deleteUser", conn);
+                SqlCommand cmd = new SqlCommand("SP_USERS", conn);
                 cmd.CommandType= CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@action","delete");
                 cmd.Parameters.AddWithValue("@id", abc[0] );
                 conn.Open();
                 cmd.ExecuteNonQuery();

@@ -22,8 +22,9 @@ namespace Authenticatiion_30626
                 BindCountry();
                 if (Request.QueryString["idd"] != null && Request.QueryString["idd"] != "")
                 {
-                    SqlCommand cmd = new SqlCommand("bindUser", conn);
+                    SqlCommand cmd = new SqlCommand("SP_USERS", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@action","edit");
                     cmd.Parameters.AddWithValue("@id", Request.QueryString["idd"]);
                     conn.Open();
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
@@ -63,8 +64,9 @@ namespace Authenticatiion_30626
 
         public void BindGender()
         {
-            SqlCommand cmd = new SqlCommand("bindGender",conn);
+            SqlCommand cmd = new SqlCommand("SP_USERS", conn);
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@action", "gender");
             conn.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -77,8 +79,9 @@ namespace Authenticatiion_30626
         }
         public void BindHobbies()
         {
-            SqlCommand cmd = new SqlCommand("bindHobbies", conn);
+            SqlCommand cmd = new SqlCommand("SP_USERS", conn);
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@action", "hobby");
             conn.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -91,8 +94,9 @@ namespace Authenticatiion_30626
         }
         public void BindCountry()
         {
-            SqlCommand cmd = new SqlCommand("bindCountries", conn);
+            SqlCommand cmd = new SqlCommand("SP_USERS", conn);
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@action", "country");
             conn.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -108,9 +112,10 @@ namespace Authenticatiion_30626
         }
         public void BindStates()
         {
-            SqlCommand cmd = new SqlCommand("bindStates", conn);
+            SqlCommand cmd = new SqlCommand("SP_USERS", conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@countryId", ddlcountry.SelectedValue);
+            cmd.Parameters.AddWithValue("@action", "state");
+            cmd.Parameters.AddWithValue("@country", ddlcountry.SelectedValue);
             conn.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -124,9 +129,10 @@ namespace Authenticatiion_30626
         }
         public void BindCities()
         {
-            SqlCommand cmd = new SqlCommand("bindCities", conn);
+            SqlCommand cmd = new SqlCommand("SP_USERS", conn);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@StateId", ddlstate.SelectedValue);
+            cmd.Parameters.AddWithValue("@action", "city");
+            cmd.Parameters.AddWithValue("@state", ddlstate.SelectedValue);
             conn.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
@@ -183,8 +189,9 @@ namespace Authenticatiion_30626
             
             if (btn_register.Text == "Register")
             {
-                SqlCommand cmd = new SqlCommand("insertUsers",conn);
+                SqlCommand cmd = new SqlCommand("SP_USERS", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@action", "insert");
                 cmd.Parameters.AddWithValue("@name", txtname.Text);
                 cmd.Parameters.AddWithValue("@email", txtemail.Text);
                 cmd.Parameters.AddWithValue("@password", txtpwd.Text);
@@ -211,12 +218,20 @@ namespace Authenticatiion_30626
                         "showPopup('User registered successfully. ','green');",
                         true
                     );
+                    ScriptManager.RegisterStartupScript(
+                        this,
+                        this.GetType(),
+                        "redirectDelay",
+                        "setTimeout(function(){ window.location.href='LoginForm.aspx'; }, 4000);",
+                        true
+                    );
                 }
             }else if (btn_register.Text == "Update")
             {
 
-                SqlCommand cmd = new SqlCommand("updatetUsers", conn);
+                SqlCommand cmd = new SqlCommand("SP_USERS", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@action","update");
                 cmd.Parameters.AddWithValue("@id", Request.QueryString["idd"]);
                 cmd.Parameters.AddWithValue("@name", txtname.Text);
                 cmd.Parameters.AddWithValue("@email", txtemail.Text);

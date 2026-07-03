@@ -20,8 +20,9 @@ namespace Authenticatiion_30626
 
         protected void btn_login_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("loginUser",conn);
+            SqlCommand cmd = new SqlCommand("SP_USERS", conn);
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@action","login");
             cmd.Parameters.AddWithValue("@email", txtemail.Text);
             cmd.Parameters.AddWithValue("@password", txtpassword.Text);
             conn.Open();

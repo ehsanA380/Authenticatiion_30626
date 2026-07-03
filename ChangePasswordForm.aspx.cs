@@ -29,11 +29,12 @@ namespace Authenticatiion_30626
         {
             if (txtnewpwd.Text == txtcnfpwd.Text)
             {
-                SqlCommand cmd = new SqlCommand("updatePassword", conn);
+                SqlCommand cmd = new SqlCommand("SP_USERS", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@action", "updatePassword");
                 cmd.Parameters.AddWithValue("@id", Session["id"]);
                 cmd.Parameters.AddWithValue("@oldPassword", txtoldpwd.Text);
-                cmd.Parameters.AddWithValue("@newPassword", txtnewpwd.Text);
+                cmd.Parameters.AddWithValue("@password", txtnewpwd.Text);
                 conn.Open();
                 int i = cmd.ExecuteNonQuery();
                 conn.Close();
